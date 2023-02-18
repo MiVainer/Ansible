@@ -1,0 +1,20 @@
+
+...
+ - vasya:
+     nick: vasek
+     position: developer
+     skills:
+        - puthon
+        - mysql
+        - docker
+
+ - petya:
+     nick: pet
+     position: manager
+     skills:
+        - manage
+        - slow
+        - noise
+
+ - kolia: { nick: kolian, position: administrator, skills: ['web', 'service'] }
+
