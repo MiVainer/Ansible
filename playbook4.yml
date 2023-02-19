@@ -1,0 +1,38 @@
+---
+
+- name: My playbook
+  hosts: all
+  become: yes
+
+
+  vars:
+   message1: privet
+   message2: world
+   secret: dsfkljslkfjs
+
+
+  tasks:
+
+  - name: print secret variable
+    debug:
+     var: secret
+
+  - debug:
+     msg: "Secretnoe slovo: {{ secret }}"
+
+  - debug:
+     msg: "Admin name is {{ ansible_user }} (hosts.txt)"
+
+  - set_fact: full_message="var1 - {{ message1 }}, var2 -  {{ message2 }}, var3(hosts.txt) - {{ ansible_user }}"
+
+  - debug:
+     var: full_message
+
+  - debug:
+     var: ansible_distribution
+
+  - shell: uptime
+    register: results
+
+  - debug:
+     var: results
