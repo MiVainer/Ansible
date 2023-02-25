@@ -1,0 +1,53 @@
+
+---
+
+- name: install apache and upload my web page
+  hosts: all
+  become: yes
+
+
+  vars:
+   source_folder: ./MyWebPage2
+   destin_folder: /var/www/html
+
+
+  tasks:
+  - name: Check version OS
+    debug: var=ansible_os_family
+
+  - block: # ====Blok for RedHat====
+
+     - name: install apache for RedHat
+       apt: name=apache state=latest
+
+     - name: start web server for Redhat
+       service: name=apache state=started enabled=yes
+    when: ansible_os_family == "RedHat"
+
+  - block:  #=====Block for Ubuntu====
+
+     - name: install apache for Ubuntu
+       apt: name=apache2 state=latest
+
+     - name: start web server for Debian
+       service: name=apache2 state=started enabled=yes
+    when: ansible_os_family == "Debian"
+
+
+  - name: copy MyHomePage to servers
+    copy: src={{ source_folder }}/{{ item }}  dest={{ destin_folder }} mode=0555
+    loop:
+     - "index.html"
+     - "123.jpg"
+    notify:
+     - restart apache Red Hat
+     - restart apache Debian
+
+  handlers:
+  - name: restart apache Red Hat
+    service: name=apache state=restarted
+    when: ansible_os_family == "RedHat"
+
+  - name: restart apache Debian
+    service: name=apache2 state=restarted
+    when: ansible_os_family == "Debian"

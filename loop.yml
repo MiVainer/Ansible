@@ -1,0 +1,34 @@
+
+---
+- name: loops
+  hosts: all
+  become: yes
+
+
+
+  tasks:
+  - name: Say hello!
+    debug: msg="Hello {{ item }}"
+    with_items:
+      - "Vasya"
+      - "Petya"
+      - "Masha"
+      - "Olya"
+
+  - name: Loop until example
+    shell: echo -n Z >> myfile.txt && cat myfile.txt
+    register: output
+    delay: 2
+    retries: 10
+    until: output.stdout.find("ZZZZ") == false
+
+  - name: Print Output
+    debug:
+      var: output.stdout
+
+
+  - name: Install Package
+    apt: name={{ item }} state=latest
+    with_items:
+     - python3
+     - htop
