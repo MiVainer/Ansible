@@ -1,0 +1,15 @@
+<html>
+	<head>
+		  <title>Тестовая страница сервера Апач!!!</title>
+		    <mett="utf-8">
+		    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	</head>
+	<body>
+        <CENTER>
+                <font color="gold"> Owner of this server is: {{ ansible_user }} <br>
+		<h1> Тестовая страница сервера Apache </h1>
+	Server hostname: {{ ansible_hostname }} <br>
+	Server OS is: {{ ansible_os_family }} <br>
+	IP address of this server: {{ ansible_default_ipv4.address }} <br>
+	</body>
+</html>

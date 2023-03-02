@@ -33,11 +33,15 @@
        service: name=apache2 state=started enabled=yes
     when: ansible_os_family == "Debian"
 
+  - name: Generate index.html file
+    template: src={{ source_folder }}/index.j2 dest={{ destin_folder }}/index.html mode=0555 # проверяет наличие переменных
+    notify:
+     - restart apache Red Hat
+     - restart apache Debian
 
   - name: copy MyHomePage to servers
     copy: src={{ source_folder }}/{{ item }}  dest={{ destin_folder }} mode=0555
     loop:
-     - "index.html"
      - "123.jpg"
     notify:
      - restart apache Red Hat
