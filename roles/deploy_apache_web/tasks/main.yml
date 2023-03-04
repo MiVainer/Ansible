@@ -1,0 +1,33 @@
+---
+# tasks file for deploy_apache_web
+  - block: # ====Blok for RedHat====
+     - name: install apache for RedHat
+       apt: name=apache state=latest
+
+     - name: start web server for Redhat
+       service: name=apache state=started enabled=yes
+    when: ansible_os_family == "RedHat"
+
+  - block:  #=====Block for Ubuntu====
+
+     - name: install apache for Ubuntu
+       apt: name=apache2 state=latest
+
+     - name: start web server for Debian
+       service: name=apache2 state=started enabled=yes
+    when: ansible_os_family == "Debian"
+
+  - name: Generate index.html file
+    template: src=index.j2 dest={{ destin_folder }}/index.html mode=0555 # проверяет наличие переменных
+    notify:
+     - restart apache Red Hat
+     - restart apache Debian
+
+  - name: copy MyHomePage to servers
+    copy: src={{ item }}  dest={{ destin_folder }} mode=0555
+    loop:
+     - "123.jpg"
+    notify:
+     - restart apache Red Hat
+     - restart apache Debian
+
