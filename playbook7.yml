@@ -1,0 +1,18 @@
+---
+- name: Create File&Folder
+  hosts: all
+  become: yes
+
+  vars:
+   mytext: "Privet ot MiViner"
+
+  tasks:
+
+  - name: Ping test
+    ping:
+
+  - name: Create Folders
+    include_tasks: create_folders.yml # перекидываем таски в отдельный файл и вызываем его include_tasks
+
+  - name: Create Files
+    include_tasks: create_files.yml
